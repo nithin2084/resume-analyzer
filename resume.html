@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Screening AI System</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a2e;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #162447;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #e94560;
+        }
+
+        p, li {
+            line-height: 1.6;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 8px;
+            border: 2px solid #e94560;
+            border-radius: 5px;
+            background: #1a1a2e;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="submit"] {
+            padding: 12px 25px;
+            background-color: #e94560;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #d92a50;
+        }
+
+        .results {
+            margin-top: 30px;
+            background-color: #1a1a2e;
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #0f3460;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-item h3 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #e94560;
+        }
+
+        .result-item p, .result-item ul {
+            margin: 5px 0;
+            color: #ddd;
+        }
+
+        .result-item ul {
+            padding-left: 20px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        footer a {
+            color: #e94560;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style the button to make it visible */
+        .hirer-button {
+            padding: 12px 30px;
+            background-color: #4CAF50; /* Green color */
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background-color 0.3s ease;
+        }
+
+        .hirer-button:hover {
+            background-color: #45a049; /* Slightly darker green */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Resume Screening AI System</h1>
+         <!-- Button to go to Hirer Page -->
+            <a href="/hirer"><button class="hirer-button">Go to Hirer Page</button></a>
+        <p>Upload your resume in TXT or PDF format to get instant insights:</p>
+        <ul>
+            <li>Resume Categorization</li>
+            <li>Job Recommendations</li>
+            <li>Resume Parsing (Information Extraction)</li>
+        </ul>
+
+        <form action="/pred" method="post" enctype="multipart/form-data">
+            <input type="file" name="resumes" accept=".pdf, .txt" multiple required>
+            <input type="submit" value="Analyze Resumes">
+        </form>
+
+        {% if message %}
+        <p class="text-center" style="color: #f00;">{{ message }}</p>
+        {% endif %}
+
+        {% if results %}
+        <div class="results">
+            <h2 style="text-align: center; color: #e94560;">Uploaded Resumes Results:</h2>
+
+
+
+            {% for result in results %}
+            <div class="result-item">
+                <h3>File: {{ result.filename }}</h3>
+                {% if result.error %}
+                <p><strong>Error:</strong> {{ result.error }}</p>
+                {% else %}
+                <p><strong>Category:</strong> {{ result.predicted_category }}</p>
+                <p><strong>Recommended Job:</strong> {{ result.recommended_job }}</p>
+                <p><strong>Name:</strong> {{ result.name }}</p>
+                <p><strong>Phone No:</strong> {{ result.phone }}</p>
+                <p><strong>Email:</strong> {{ result.email }}</p>
+                <p><strong>Skills:</strong></p>
+                <ul>
+                    {% for skill in result.skills %}
+                    <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+
+    <footer>
+        <p>Powered by <a href="#">Your Company</a> | AI for Smarter Hiring</p>
+    </footer>
+</body>
+
+</html>

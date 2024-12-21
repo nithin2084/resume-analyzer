@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Shortlisting Portal</title>
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a2e;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #162447;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      color: #e94560;
+    }
+
+    label {
+      font-size: 1.1em;
+      margin-bottom: 5px;
+      display: block;
+      color: #e94560;
+    }
+
+    input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 2px solid #e94560;
+      border-radius: 5px;
+      background: #1a1a2e;
+      color: white;
+      font-size: 1em;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      padding: 12px 25px;
+      background-color: #e94560;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #d92a50;
+    }
+
+    .results {
+      margin-top: 30px;
+      background-color: #1a1a2e;
+    }
+
+    .result-item {
+      margin-bottom: 20px;
+      padding: 20px;
+      background-color: #0f3460;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .result-item h3 {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #e94560;
+    }
+
+    .result-item ul {
+      padding-left: 20px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+
+    footer a {
+      color: #e94560;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Style the button to make it visible */
+    .go-to-resume-button {
+      padding: 12px 30px;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 1.2em;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto;
+      transition: background-color 0.3s ease;
+    }
+
+    .go-to-resume-button:hover {
+      background-color: #45a049;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Job Shortlisting Portal</h1>
+    <form action="/hirer" method="POST" enctype="multipart/form-data">
+      <label for="job-title">Job Title:</label>
+      <input type="text" name="job_title" id="job-title" required><br><br>
+
+      <label for="job-description">Job Description:</label>
+      <textarea name="job_description" id="job-description" required></textarea><br><br>
+
+      <label for="resumes">Upload Resumes:</label>
+      <input type="file" name="resumes" id="resumes" multiple required><br><br>
+
+      <button type="submit">Shortlist Candidates</button>
+    </form>
+
+    {% if results %}
+      <h2>Shortlisted Candidates</h2>
+      <div class="results">
+        {% for category, resumes in results.items() %}
+          <div class="result-item">
+            <h3>Category: {{ category }}</h3>
+            <ul>
+              {% for resume in resumes %}
+                <li>{{ resume }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No matching candidates found based on the skills provided in the job description.</p>
+    {% endif %}
+
+    <a href="/" class="go-to-resume-button">Go Back to Resume Upload</a>
+  </div>
+
+  <footer>
+    <p>Powered by <a href="#">Your Company</a> | AI for Smarter Hiring</p>
+  </footer>
+</body>
+
+</html>
